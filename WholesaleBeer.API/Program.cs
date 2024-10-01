@@ -1,7 +1,13 @@
+using DotEnv.Core;
 using Microsoft.EntityFrameworkCore;
 using WholesaleBeer.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Read environment variables.
+new EnvLoader().Load();
+var envVarReader = new EnvReader();
+string connectionString = envVarReader["DataBase_ConnectionString"];
 
 // Add services to the container.
 
@@ -10,10 +16,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string connectionString = string.Empty;
-
+// Add database service.
 builder.Services.AddDbContext<WholesaleBeerDbContext>(options =>
-options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
