@@ -7,5 +7,8 @@
         public float AlcoholContentPercentage { get; set; }
         public float Price { get; set; }
         public Guid BreweryId { get; set; }
+
+        // Navigation properties
+        public Brewery Brewery { get; set; }
     }
 }
