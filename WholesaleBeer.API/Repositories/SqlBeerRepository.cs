@@ -45,11 +45,22 @@ namespace WholesaleBeer.API.Repositories
             return existingBeer;
         }
 
-        public async Task<List<Beer>> GetAllAsync()
+        public async Task<List<Beer>> GetAllAsync(string? sortBy = null, bool isAscending = true)
         {
-            var beers = await _wholesaleBeerDbContext.Beers.Include(x => x.Brewery).ToListAsync();
+            var beers = _wholesaleBeerDbContext.Beers
+                .Include(x => x.Brewery)
+                .AsQueryable();
 
-            return beers;
+            // Sorting by Brewery
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (sortBy.Equals("Brewery", StringComparison.OrdinalIgnoreCase))
+                {
+                    beers = isAscending ? beers.OrderBy(x => x.Brewery.Name) : beers.OrderByDescending(x => x.Brewery.Name);
+                }
+            }
+
+            return await beers.ToListAsync();
         }
     }
 }

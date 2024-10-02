@@ -61,12 +61,13 @@ namespace WholesaleBeer.API.Controllers
         }
 
         // GET All Beer
-        // GET: api/beers
+        // GET: api/beers?sortBy=PropertyName&isAscending=true
+        // e.g. sortBy=Brewery&isAscending=false
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? sortBy, [FromQuery] bool? isAscending)
         {
             // Get all beers
-            var beersDomainModel = await _beerRepository.GetAllAsync();
+            var beersDomainModel = await _beerRepository.GetAllAsync(sortBy, isAscending ?? true);
 
             // Map Domain Model back to DTO
             var beersDto = _mapper.Map<List<BeerDto>>(beersDomainModel);
