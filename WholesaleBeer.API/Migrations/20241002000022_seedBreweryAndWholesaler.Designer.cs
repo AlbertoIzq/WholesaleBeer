@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WholesaleBeer.API.Data;
 
@@ -11,9 +12,11 @@ using WholesaleBeer.API.Data;
 namespace WholesaleBeer.API.Migrations
 {
     [DbContext(typeof(WholesaleBeerDbContext))]
-    partial class WholesaleBeerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241002000022_seedBreweryAndWholesaler")]
+    partial class seedBreweryAndWholesaler
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
