@@ -44,5 +44,12 @@ namespace WholesaleBeer.API.Repositories
 
             return existingBeer;
         }
+
+        public async Task<List<Beer>> GetAllAsync()
+        {
+            var beers = await _wholesaleBeerDbContext.Beers.Include(x => x.Brewery).ToListAsync();
+
+            return beers;
+        }
     }
 }

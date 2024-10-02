@@ -59,5 +59,20 @@ namespace WholesaleBeer.API.Controllers
             // Return deleted beer back to the client
             return Ok(beerDto);
         }
+
+        // GET All Beer
+        // GET: api/beers
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            // Get all beers
+            var beersDomainModel = await _beerRepository.GetAllAsync();
+
+            // Map Domain Model back to DTO
+            var beersDto = _mapper.Map<List<BeerDto>>(beersDomainModel);
+
+            // Return created beer back to the client
+            return Ok(beersDto);
+        }
     }
 }

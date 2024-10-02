@@ -6,5 +6,6 @@ namespace WholesaleBeer.API.Repositories
     {
         Task<Beer> CreateAsync(Beer beer);
         Task<Beer?> DeleteAsync(Guid id);
+        Task<List<Beer>> GetAllAsync();
     }
 }
