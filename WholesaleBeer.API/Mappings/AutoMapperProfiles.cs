@@ -10,6 +10,9 @@ namespace WholesaleBeer.API.Mappings
         {
             CreateMap<AddBeerRequestDto, Beer>();
             CreateMap<Beer, BeerDto>().ReverseMap();
+
+            CreateMap<AddBeerStockRequestDto, BeerStock>();
+            CreateMap<BeerStock, BeerStockDto>().ReverseMap();
         }
     }
 }
