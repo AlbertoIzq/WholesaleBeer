@@ -1,6 +1,8 @@
 using DotEnv.Core;
 using Microsoft.EntityFrameworkCore;
 using WholesaleBeer.API.Data;
+using WholesaleBeer.API.Mappings;
+using WholesaleBeer.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,12 @@ builder.Services.AddSwaggerGen();
 // Add database service.
 builder.Services.AddDbContext<WholesaleBeerDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+// Add data repositories.
+builder.Services.AddScoped<IBeerRepository, SqlBeerRepository>();
+
+// Add Automapper.
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
 
