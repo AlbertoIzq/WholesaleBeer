@@ -5,5 +5,6 @@ namespace WholesaleBeer.API.Repositories
     public interface IBeerRepository
     {
         Task<Beer> CreateAsync(Beer beer);
+        Task<Beer?> DeleteAsync(Guid id);
     }
 }

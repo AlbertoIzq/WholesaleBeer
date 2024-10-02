@@ -35,7 +35,28 @@ namespace WholesaleBeer.API.Controllers
             // Map Domain Model back to DTO
             var beerDto = _mapper.Map<BeerDto>(beerDomainModel);
 
-            // Show information to the client
+            // Return created beer back to the client
+            return Ok(beerDto);
+        }
+
+        // DELETE Beer
+        // DELETE: api/beers/id
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            // Delete if it exists
+            var beerDomainModel = await _beerRepository.DeleteAsync(id);
+
+            if (beerDomainModel is null)
+            {
+                return NotFound();
+            }
+
+            // Map Domain Model back to DTO
+            var beerDto = _mapper.Map<BeerDto>(beerDomainModel);
+
+            // Return deleted beer back to the client
             return Ok(beerDto);
         }
     }
