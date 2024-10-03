@@ -38,5 +38,30 @@ namespace WholesaleBeer.API.Controllers
             // Return created beerStock back to the client
             return Ok(beerStockDto);
         }
+
+        // UPDATE BeerStock
+        // PUT: api/beerstocks/{id}
+        [HttpPut]
+        [ValidateModel]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateBeerStockRequestDto updateBeerStockRequestDto)
+        {
+            // Map from Dto to Domain Model
+            var beerStockDomainModel = _mapper.Map<BeerStock>(updateBeerStockRequestDto);
+
+            // Update if it exists
+            beerStockDomainModel = await _beerStockRepository.UpdateAsync(id, beerStockDomainModel);
+
+            if (beerStockDomainModel is null)
+            {
+                return NotFound();
+            }
+
+            // Map Domain Model to Dto
+            var beerStockDto = _mapper.Map<BeerStockDto>(beerStockDomainModel);
+
+            // Return updated beerStock back to the client
+            return Ok(beerStockDto);
+        }
     }
 }

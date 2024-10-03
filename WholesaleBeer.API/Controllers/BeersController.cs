@@ -40,7 +40,7 @@ namespace WholesaleBeer.API.Controllers
         }
 
         // DELETE Beer
-        // DELETE: api/beers/id
+        // DELETE: api/beers/{id}
         [HttpDelete]
         [Route("{id:Guid}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
