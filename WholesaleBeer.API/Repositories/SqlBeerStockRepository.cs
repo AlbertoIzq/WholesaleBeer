@@ -21,6 +21,7 @@ namespace WholesaleBeer.API.Repositories
             // Populate Beer and Wholesaler navigation properties
             BeerStock beerStockReturn = await _wholesaleBeerDbContext.BeerStocks
                 .Include(x => x.Beer)
+                .Include(x => x.Beer.Brewery)
                 .Include(x => x.Wholesaler)
                 .FirstOrDefaultAsync(x => x.Id == beerStock.Id);
 
@@ -47,6 +48,7 @@ namespace WholesaleBeer.API.Repositories
             // Populate Beer and Wholesaler navigation properties
             BeerStock beerStockReturn = await _wholesaleBeerDbContext.BeerStocks
                 .Include(x => x.Beer)
+                .Include(x => x.Beer.Brewery)
                 .Include(x => x.Wholesaler)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
