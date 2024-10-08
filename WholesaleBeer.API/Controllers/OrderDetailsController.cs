@@ -4,7 +4,7 @@ using WholesaleBeer.API.CustomActionFilters;
 using WholesaleBeer.API.Models.Domain;
 using WholesaleBeer.API.Models.DTO;
 using WholesaleBeer.API.Repositories.Interfaces;
-using static System.Net.Mime.MediaTypeNames;
+using WholesaleBeer.Utility;
 
 namespace WholesaleBeer.API.Controllers
 {
@@ -39,9 +39,8 @@ namespace WholesaleBeer.API.Controllers
                 var orderDetailDomainModel = _mapper.Map<OrderDetail>(addOrderDetailRequestDto);
 
                 // Calculate price
-                var beerOrdered = await _beerRepository.GetByIdAsync(orderDetailDomainModel.BeerId);
-                var priceBeer = beerOrdered.Price;
-                orderDetailDomainModel.Price = orderDetailDomainModel.Quantity * priceBeer;
+                double price = await CalculatePrice(orderDetailDomainModel);
+                orderDetailDomainModel.Price = price;
 
                 // Create orderDetail
                 await _orderDetailRepository.CreateAsync(orderDetailDomainModel);
@@ -59,6 +58,25 @@ namespace WholesaleBeer.API.Controllers
         private void ValidateOrderDetail(AddOrderDetailRequestDto addOrderDetailRequestDto)
         {
             /// @todo
+        }
+
+        private async Task<double> CalculatePrice(OrderDetail orderDetail)
+        {
+            var beerOrdered = await _beerRepository.GetByIdAsync(orderDetail.BeerId);
+            var priceBeer = beerOrdered.Price;
+            double price = orderDetail.Quantity * priceBeer;
+
+            // Apply discount
+            if (orderDetail.Quantity > SD.DISCOUNT_B_MIN_BEERS)
+            {
+                price *= (1 - SD.DISCOUNT_B);
+            }
+            else if (orderDetail.Quantity > SD.DISCOUNT_A_MIN_BEERS)
+            {
+                price *= (1 - SD.DISCOUNT_A);
+            }
+
+            return price;
         }
     }
 }

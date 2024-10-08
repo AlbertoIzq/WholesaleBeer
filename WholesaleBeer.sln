@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WholesaleBeer.API", "WholesaleBeer.API\WholesaleBeer.API.csproj", "{925DB20E-B222-49DA-922A-05A21C7A422C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WholesaleBeer.API", "WholesaleBeer.API\WholesaleBeer.API.csproj", "{925DB20E-B222-49DA-922A-05A21C7A422C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WholesaleBeer.Utility", "WholesaleBeer.Utility\WholesaleBeer.Utility.csproj", "{F9D3C603-CA47-4B7A-B261-594C8F8B754D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{925DB20E-B222-49DA-922A-05A21C7A422C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{925DB20E-B222-49DA-922A-05A21C7A422C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{925DB20E-B222-49DA-922A-05A21C7A422C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D3C603-CA47-4B7A-B261-594C8F8B754D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D3C603-CA47-4B7A-B261-594C8F8B754D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D3C603-CA47-4B7A-B261-594C8F8B754D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D3C603-CA47-4B7A-B261-594C8F8B754D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
