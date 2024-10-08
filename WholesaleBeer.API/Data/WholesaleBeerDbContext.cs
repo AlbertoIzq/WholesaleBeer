@@ -20,6 +20,66 @@ namespace WholesaleBeer.API.Data
             base.OnModelCreating(modelBuilder);
 
             // Data to seed
+            var beers = new List<Beer>()
+            {
+                new Beer
+                {
+                    Id = Guid.Parse("771F94AC-9BD6-4C82-2457-08DCE27BE8AE"),
+                    Name = "Orval",
+                    AlcoholContentPercentage = 6.2,
+                    Price = 3.7,
+                    BreweryId = Guid.Parse("8DB2BB14-5AE6-4894-9AAB-205D29BFB176")
+                },
+                new Beer
+                {
+                    Id = Guid.Parse("6E3B4A15-AE20-40A1-114A-08DCE2D288AD"),
+                    Name = "Rochefort 10",
+                    AlcoholContentPercentage = 11.3,
+                    Price = 4.1,
+                    BreweryId = Guid.Parse("91D8C67C-C92B-48A4-95B3-77182BFCBF73")
+                },
+                new Beer
+                {
+                    Id = Guid.Parse("7AEFCEE4-347F-4184-114B-08DCE2D288AD"),
+                    Name = "Rochefort 8",
+                    AlcoholContentPercentage = 9.2,
+                    Price = 3.05,
+                    BreweryId = Guid.Parse("91D8C67C-C92B-48A4-95B3-77182BFCBF73")
+                },
+                new Beer
+                {
+                    Id = Guid.Parse("5B71078E-3E4E-495C-C75B-08DCE2D581F8"),
+                    Name = "Trappist Westvleteren 12",
+                    AlcoholContentPercentage = 10.2,
+                    Price = 2.33,
+                    BreweryId = Guid.Parse("53965366-20B3-4F2D-9972-A886D6972C1F")
+                },
+                new Beer
+                {
+                    Id = Guid.Parse("7503FAEB-F43C-428A-C75C-08DCE2D581F8"),
+                    Name = "Trappist Westvleteren 8",
+                    AlcoholContentPercentage = 8.0,
+                    Price = 2.04,
+                    BreweryId = Guid.Parse("53965366-20B3-4F2D-9972-A886D6972C1F")
+                },
+                new Beer
+                {
+                    Id = Guid.Parse("527fad60-6791-41d7-aadb-439805a5957b"),
+                    Name = "Chimay Bleu",
+                    AlcoholContentPercentage = 9.0,
+                    Price = 3.6,
+                    BreweryId = Guid.Parse("36A69969-2A36-4F96-B037-B5603FE94A78")
+                },
+                new Beer
+                {
+                    Id = Guid.Parse("b333123a-b777-41bc-a457-d6b28c2acb91"),
+                    Name = "Westmalle Tripel",
+                    AlcoholContentPercentage = 9.5,
+                    Price = 2.69,
+                    BreweryId = Guid.Parse("62410140-4FB9-4662-8EF6-B5AA9DD7AA5D")
+                }
+            };
+
             var breweries = new List<Brewery>()
             {
                 new Brewery
@@ -78,8 +138,35 @@ namespace WholesaleBeer.API.Data
                 },
             };
 
+            var beerStocks = new List<BeerStock>()
+            {
+                new BeerStock
+                {
+                    Id = Guid.Parse("0d646172-29dd-41f8-aa1e-8483980cb9ef"),
+                    BeerId = Guid.Parse("771F94AC-9BD6-4C82-2457-08DCE27BE8AE"),
+                    WholesalerId = Guid.Parse("9fc5f185-c6c3-4bcd-90c0-74e35304d69c"),
+                    StockLeft = 150
+                },
+                new BeerStock
+                {
+                    Id = Guid.Parse("677d69a7-1c81-4b19-b178-8a473390e96a"),
+                    BeerId = Guid.Parse("6E3B4A15-AE20-40A1-114A-08DCE2D288AD"),
+                    WholesalerId = Guid.Parse("9fc5f185-c6c3-4bcd-90c0-74e35304d69c"),
+                    StockLeft = 80
+                },
+                new BeerStock
+                {
+                    Id = Guid.Parse("13e5a2f2-cf06-4cd7-83e2-03cd681878ef"),
+                    BeerId = Guid.Parse("7AEFCEE4-347F-4184-114B-08DCE2D288AD"),
+                    WholesalerId = Guid.Parse("5c8e5f49-652b-42b0-8418-cd5a0ddba3fd"),
+                    StockLeft = 15
+                },
+            };
+
             // Seed to the database
+            modelBuilder.Entity<Beer>().HasData(beers);
             modelBuilder.Entity<Brewery>().HasData(breweries);
+            modelBuilder.Entity<BeerStock>().HasData(beerStocks);
             modelBuilder.Entity<Wholesaler>().HasData(wholesalers);
         }
     }
