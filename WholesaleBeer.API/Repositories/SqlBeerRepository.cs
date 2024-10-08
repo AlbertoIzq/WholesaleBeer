@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WholesaleBeer.API.Data;
 using WholesaleBeer.API.Models.Domain;
+using WholesaleBeer.API.Repositories.Interfaces;
 
 namespace WholesaleBeer.API.Repositories
 {
@@ -61,6 +62,13 @@ namespace WholesaleBeer.API.Repositories
             }
 
             return await beers.ToListAsync();
+        }
+
+        public async Task<Beer?> GetByIdAsync(Guid id)
+        {
+            return await _wholesaleBeerDbContext.Beers
+                .Include(x => x.Brewery)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

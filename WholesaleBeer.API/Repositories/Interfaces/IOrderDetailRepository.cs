@@ -1,6 +1,6 @@
 ﻿using WholesaleBeer.API.Models.Domain;
 
-namespace WholesaleBeer.API.Repositories
+namespace WholesaleBeer.API.Repositories.Interfaces
 {
     public interface IOrderDetailRepository
     {

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WholesaleBeer.API.Data;
 using WholesaleBeer.API.Mappings;
 using WholesaleBeer.API.Repositories;
+using WholesaleBeer.API.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

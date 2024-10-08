@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WholesaleBeer.API.Data;
 using WholesaleBeer.API.Models.Domain;
+using WholesaleBeer.API.Repositories.Interfaces;
 
 namespace WholesaleBeer.API.Repositories
 {

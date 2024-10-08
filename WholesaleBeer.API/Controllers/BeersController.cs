@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WholesaleBeer.API.CustomActionFilters;
 using WholesaleBeer.API.Models.Domain;
 using WholesaleBeer.API.Models.DTO;
-using WholesaleBeer.API.Repositories;
+using WholesaleBeer.API.Repositories.Interfaces;
 
 namespace WholesaleBeer.API.Controllers
 {
