@@ -14,6 +14,9 @@ namespace WholesaleBeer.API.Mappings
             CreateMap<AddBeerStockRequestDto, BeerStock>();
             CreateMap<BeerStock, BeerStockDto>().ReverseMap();
             CreateMap<UpdateBeerStockRequestDto, BeerStock>();
+
+            CreateMap<AddOrderDetailRequestDto, OrderDetail>();
+            CreateMap<OrderDetail, OrderDetailDto>().ReverseMap();
         }
     }
 }
