@@ -31,6 +31,8 @@ namespace WholesaleBeer.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddOrderDetailRequestDto addOrderDetailRequestDto)
         {
+            try
+            {
             ValidateOrderDetail(addOrderDetailRequestDto);
 
             if (ModelState.IsValid)
@@ -51,13 +53,18 @@ namespace WholesaleBeer.API.Controllers
                 // Return created orderDetail back to the client
                 return Ok(orderDetailDto);
             }
-
-            return BadRequest(ModelState);
+            catch (Exception ex)
+            {
+                return Problem(ex.Message, null, (int)HttpStatusCode.BadRequest);
+            }
         }
 
         private void ValidateOrderDetail(AddOrderDetailRequestDto addOrderDetailRequestDto)
         {
-            /// @todo
+            if (addOrderDetailRequestDto.Quantity <= 0)
+            {
+                throw new Exception("The order cannot be empty");
+            }
         }
 
         private async Task<double> CalculatePrice(OrderDetail orderDetail)
