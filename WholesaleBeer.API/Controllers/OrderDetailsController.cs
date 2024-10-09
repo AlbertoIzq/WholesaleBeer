@@ -15,19 +15,23 @@ namespace WholesaleBeer.API.Controllers
     {
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IMapper _mapper;
-        private readonly IBeerRepository _beerRepository;
         private readonly IBeerStockRepository _beerStockRepository;
         private readonly IWholesalerRepository _wholesalerRepository;
 
+        private readonly OrderDetailPriceCalculator _orderDetailPriceCalculator;
+        private readonly IBeerRepository _beerRepository;
+
         public OrderDetailsController(IOrderDetailRepository orderDetailRepository,
-            IMapper mapper, IBeerRepository beerRepository, IBeerStockRepository beerStockRepository,
-            IWholesalerRepository wholesalerRepository)
+            IMapper mapper, IBeerStockRepository beerStockRepository,
+            IWholesalerRepository wholesalerRepository, IBeerRepository beerRepository)
         {
             _orderDetailRepository = orderDetailRepository;
             _mapper = mapper;
-            _beerRepository = beerRepository;
             _beerStockRepository = beerStockRepository;
             _wholesalerRepository = wholesalerRepository;
+
+            _beerRepository = beerRepository;
+            _orderDetailPriceCalculator = new OrderDetailPriceCalculator(_beerRepository);
         }
 
         // CREATE OrderDetail
@@ -43,7 +47,7 @@ namespace WholesaleBeer.API.Controllers
                 var orderDetailDomainModel = _mapper.Map<OrderDetail>(addOrderDetailRequestDto);
 
                 // Calculate price
-                double price = await CalculatePrice(orderDetailDomainModel);
+                double price = await _orderDetailPriceCalculator.CalculatePrice(orderDetailDomainModel);
                 orderDetailDomainModel.Price = price;
 
                 // Create orderDetail
@@ -101,25 +105,6 @@ namespace WholesaleBeer.API.Controllers
                     throw new Exception("The number of beers ordered cannot be greater than the wholesaler's stock");
                 }
             }
-        }
-
-        private async Task<double> CalculatePrice(OrderDetail orderDetail)
-        {
-            var beerOrdered = await _beerRepository.GetByIdAsync(orderDetail.BeerId);
-            var priceBeer = beerOrdered.Price;
-            double price = orderDetail.Quantity * priceBeer;
-
-            // Apply discount
-            if (orderDetail.Quantity > SD.DISCOUNT_B_MIN_BEERS)
-            {
-                price *= (1 - SD.DISCOUNT_B);
-            }
-            else if (orderDetail.Quantity > SD.DISCOUNT_A_MIN_BEERS)
-            {
-                price *= (1 - SD.DISCOUNT_A);
-            }
-
-            return price;
         }
     }
 }

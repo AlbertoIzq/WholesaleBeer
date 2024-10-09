@@ -7,7 +7,7 @@ namespace WholesaleBeer.API.Models.DTO
     {
         public Guid Id { get; set; }
         public int Quantity { get; set; }
-        public float Price { get; set; }
+        public double Price { get; set; }
 
         public BeerDto Beer { get; set; }
         public Wholesaler Wholesaler { get; set; }
