@@ -28,5 +28,14 @@ namespace WholesaleBeer.API.Repositories
 
             return orderDetailReturn;
         }
+
+        public async Task<List<OrderDetail>> GetAllAsync()
+        {
+            return await _wholesaleBeerDbContext.OrderDetails
+                .Include(x => x.Beer)
+                .Include(x => x.Beer.Brewery)
+                .Include(x => x.Wholesaler)
+                .ToListAsync();
+        }
     }
 }

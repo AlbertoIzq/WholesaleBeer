@@ -76,6 +76,15 @@ namespace WholesaleBeer.API.Controllers
             {
                 throw new Exception("The wholesaler must exist");
             }
+
+            // Check if there's any duplicate in the order
+            var orderDetails = await _orderDetailRepository.GetAllAsync();
+            var orderDetail = orderDetails.FirstOrDefault(x => x.BeerId == addOrderDetailRequestDto.BeerId &&
+            x.WholesalerId == addOrderDetailRequestDto.WholesalerId && x.Quantity == addOrderDetailRequestDto.Quantity);
+            if (orderDetail is not null)
+            {
+                throw new Exception("There can't be any duplicate in the order");
+            }
         }
 
         private async Task<double> CalculatePrice(OrderDetail orderDetail)
