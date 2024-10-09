@@ -80,10 +80,26 @@ namespace WholesaleBeer.API.Controllers
             // Check if there's any duplicate in the order
             var orderDetails = await _orderDetailRepository.GetAllAsync();
             var orderDetail = orderDetails.FirstOrDefault(x => x.BeerId == addOrderDetailRequestDto.BeerId &&
-            x.WholesalerId == addOrderDetailRequestDto.WholesalerId && x.Quantity == addOrderDetailRequestDto.Quantity);
+                x.WholesalerId == addOrderDetailRequestDto.WholesalerId && x.Quantity == addOrderDetailRequestDto.Quantity);
             if (orderDetail is not null)
             {
                 throw new Exception("There can't be any duplicate in the order");
+            }
+
+            // Check if the beer is sold by the wholesaler and if there's enough stock
+            var beerStocks = await _beerStockRepository.GetAllAsync();
+            var beerStock = beerStocks.FirstOrDefault(x => x.BeerId == addOrderDetailRequestDto.BeerId &&
+                x.WholesalerId == addOrderDetailRequestDto.WholesalerId);
+            if(beerStock is null)
+            {
+                throw new Exception("The beer must be sold by the wholesaler");
+            }
+            else
+            {
+                if (beerStock.StockLeft < addOrderDetailRequestDto.Quantity)
+                {
+                    throw new Exception("The number of beers ordered cannot be greater than the wholesaler's stock");
+                }
             }
         }
 
