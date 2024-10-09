@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using WholesaleBeer.API.CustomActionFilters;
 using WholesaleBeer.API.Models.Domain;
 using WholesaleBeer.API.Models.DTO;
@@ -16,14 +17,17 @@ namespace WholesaleBeer.API.Controllers
         private readonly IMapper _mapper;
         private readonly IBeerRepository _beerRepository;
         private readonly IBeerStockRepository _beerStockRepository;
+        private readonly IWholesalerRepository _wholesalerRepository;
 
         public OrderDetailsController(IOrderDetailRepository orderDetailRepository,
-            IMapper mapper, IBeerRepository beerRepository, IBeerStockRepository beerStockRepository)
+            IMapper mapper, IBeerRepository beerRepository, IBeerStockRepository beerStockRepository,
+            IWholesalerRepository wholesalerRepository)
         {
             _orderDetailRepository = orderDetailRepository;
             _mapper = mapper;
             _beerRepository = beerRepository;
             _beerStockRepository = beerStockRepository;
+            _wholesalerRepository = wholesalerRepository;
         }
 
         // CREATE OrderDetail
@@ -33,10 +37,8 @@ namespace WholesaleBeer.API.Controllers
         {
             try
             {
-            ValidateOrderDetail(addOrderDetailRequestDto);
+                await ValidateOrderDetail(addOrderDetailRequestDto);
 
-            if (ModelState.IsValid)
-            {
                 // Map DTO to Domain Model
                 var orderDetailDomainModel = _mapper.Map<OrderDetail>(addOrderDetailRequestDto);
 
@@ -59,11 +61,20 @@ namespace WholesaleBeer.API.Controllers
             }
         }
 
-        private void ValidateOrderDetail(AddOrderDetailRequestDto addOrderDetailRequestDto)
+        private async Task ValidateOrderDetail(AddOrderDetailRequestDto addOrderDetailRequestDto)
         {
+            // Check if order is empty
             if (addOrderDetailRequestDto.Quantity <= 0)
             {
                 throw new Exception("The order cannot be empty");
+            }
+
+            // Check if wholesaler exists
+            var wholesalers = await _wholesalerRepository.GetAllAsync();
+            var wholesaler = wholesalers.FirstOrDefault(x => x.Id == addOrderDetailRequestDto.WholesalerId);
+            if (wholesaler is null)
+            {
+                throw new Exception("The wholesaler must exist");
             }
         }
 

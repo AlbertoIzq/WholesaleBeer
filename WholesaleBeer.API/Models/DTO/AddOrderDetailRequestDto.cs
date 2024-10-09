@@ -10,7 +10,7 @@ namespace WholesaleBeer.API.Models.DTO
         [Required]
         public Guid WholesalerId { get; set; }
         [Required]
-        [Range(0, Int32.MaxValue, ErrorMessage = "Quantity must be greater than 0")]
+        //[Range(0, Int32.MaxValue, ErrorMessage = "Quantity must be greater than 0")]
         public int Quantity { get; set; }
     }
 }

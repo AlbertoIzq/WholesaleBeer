@@ -27,6 +27,7 @@ builder.Services.AddDbContext<WholesaleBeerDbContext>(options =>
 builder.Services.AddScoped<IBeerRepository, SqlBeerRepository>();
 builder.Services.AddScoped<IBeerStockRepository, SqlBeerStockRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, SqlOrderDetailRepository>();
+builder.Services.AddScoped<IWholesalerRepository, SqlWholesalerRepository>();
 
 // Add Automapper.
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
