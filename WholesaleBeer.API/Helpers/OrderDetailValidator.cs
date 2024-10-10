@@ -3,7 +3,7 @@ using WholesaleBeer.API.Repositories.Interfaces;
 
 namespace WholesaleBeer.API.Helpers
 {
-    public class OrderDetailValidator
+    public class OrderDetailValidator : IOrderDetailValidator
     {
         private readonly IWholesalerRepository _wholesalerRepository;
         private readonly IOrderDetailRepository _orderDetailRepository;
@@ -17,7 +17,7 @@ namespace WholesaleBeer.API.Helpers
             _beerStockRepository = beerStockRepository;
         }
 
-        public async Task ValidateOrderDetail(AddOrderDetailRequestDto addOrderDetailRequestDto)
+        public async Task<bool> ValidateOrderDetail(AddOrderDetailRequestDto addOrderDetailRequestDto)
         {
             // Check if order is empty
             if (addOrderDetailRequestDto.Quantity <= 0)
@@ -57,6 +57,8 @@ namespace WholesaleBeer.API.Helpers
                     throw new Exception("The number of beers ordered cannot be greater than the wholesaler's stock");
                 }
             }
+
+            return true;
         }
     }
 }

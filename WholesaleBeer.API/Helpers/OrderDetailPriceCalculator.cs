@@ -8,7 +8,7 @@ using WholesaleBeer.API.Repositories.Interfaces;
 
 namespace WholesaleBeer.Utility
 {
-    public class OrderDetailPriceCalculator
+    public class OrderDetailPriceCalculator : IOrderDetailPriceCalculator
     {
         private readonly IBeerRepository _beerRepository;
 

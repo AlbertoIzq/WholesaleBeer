@@ -19,23 +19,22 @@ namespace WholesaleBeer.API.Controllers
         private readonly IBeerStockRepository _beerStockRepository;
         private readonly IWholesalerRepository _wholesalerRepository;
 
-        private readonly OrderDetailPriceCalculator _orderDetailPriceCalculator;
-        private readonly OrderDetailValidator _orderDetailValidator;
+        private readonly IOrderDetailPriceCalculator _orderDetailPriceCalculator;
+        private readonly IOrderDetailValidator _orderDetailValidator;
         private readonly IBeerRepository _beerRepository;
 
         public OrderDetailsController(IOrderDetailRepository orderDetailRepository,
             IMapper mapper, IBeerStockRepository beerStockRepository,
-            IWholesalerRepository wholesalerRepository, IBeerRepository beerRepository)
+            IWholesalerRepository wholesalerRepository, IBeerRepository beerRepository,
+            IOrderDetailPriceCalculator orderDetailPriceCalculator, IOrderDetailValidator orderDetailValidator)
         {
             _orderDetailRepository = orderDetailRepository;
             _mapper = mapper;
             _beerStockRepository = beerStockRepository;
             _wholesalerRepository = wholesalerRepository;
-
             _beerRepository = beerRepository;
-            _orderDetailPriceCalculator = new OrderDetailPriceCalculator(_beerRepository);
-            _orderDetailValidator = new OrderDetailValidator(_wholesalerRepository,
-                _orderDetailRepository, _beerStockRepository);
+            _orderDetailPriceCalculator = orderDetailPriceCalculator;
+            _orderDetailValidator = orderDetailValidator;
         }
 
         // CREATE OrderDetail
@@ -45,23 +44,28 @@ namespace WholesaleBeer.API.Controllers
         {
             try
             {
-                await _orderDetailValidator.ValidateOrderDetail(addOrderDetailRequestDto);
+                if(await _orderDetailValidator.ValidateOrderDetail(addOrderDetailRequestDto))
+                {
+                    // Map DTO to Domain Model
+                    var orderDetailDomainModel = _mapper.Map<OrderDetail>(addOrderDetailRequestDto);
 
-                // Map DTO to Domain Model
-                var orderDetailDomainModel = _mapper.Map<OrderDetail>(addOrderDetailRequestDto);
+                    // Calculate price
+                    double price = await _orderDetailPriceCalculator.CalculatePrice(orderDetailDomainModel);
+                    orderDetailDomainModel.Price = price;
 
-                // Calculate price
-                double price = await _orderDetailPriceCalculator.CalculatePrice(orderDetailDomainModel);
-                orderDetailDomainModel.Price = price;
+                    // Create orderDetail
+                    await _orderDetailRepository.CreateAsync(orderDetailDomainModel);
 
-                // Create orderDetail
-                await _orderDetailRepository.CreateAsync(orderDetailDomainModel);
+                    // Map Domain Model back to DTO
+                    var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetailDomainModel);
 
-                // Map Domain Model back to DTO
-                var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetailDomainModel);
-
-                // Return created orderDetail back to the client
-                return Ok(orderDetailDto);
+                    // Return created orderDetail back to the client
+                    return Ok(orderDetailDto);
+                }
+                else
+                {
+                    return BadRequest("Something went wrong");
+                }
             }
             catch (Exception ex)
             {

@@ -1,9 +1,11 @@
 using DotEnv.Core;
 using Microsoft.EntityFrameworkCore;
 using WholesaleBeer.API.Data;
+using WholesaleBeer.API.Helpers;
 using WholesaleBeer.API.Mappings;
 using WholesaleBeer.API.Repositories;
 using WholesaleBeer.API.Repositories.Interfaces;
+using WholesaleBeer.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,10 @@ builder.Services.AddScoped<IBeerRepository, SqlBeerRepository>();
 builder.Services.AddScoped<IBeerStockRepository, SqlBeerStockRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, SqlOrderDetailRepository>();
 builder.Services.AddScoped<IWholesalerRepository, SqlWholesalerRepository>();
+
+// Add helpers
+builder.Services.AddScoped<IOrderDetailPriceCalculator, OrderDetailPriceCalculator>();
+builder.Services.AddScoped<IOrderDetailValidator, OrderDetailValidator>();
 
 // Add Automapper.
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
