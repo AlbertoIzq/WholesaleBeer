@@ -54,7 +54,7 @@ namespace WholesaleBeer.API.Controllers
                     orderDetailDomainModel.Price = price;
 
                     // Create orderDetail
-                    await _orderDetailRepository.CreateAsync(orderDetailDomainModel);
+                    orderDetailDomainModel = await _orderDetailRepository.CreateAsync(orderDetailDomainModel);
 
                     // Map Domain Model back to DTO
                     var orderDetailDto = _mapper.Map<OrderDetailDto>(orderDetailDomainModel);

@@ -12,15 +12,16 @@ namespace WholesaleBeer.API.Tests
 {
     public class BeersControllerTests
     {
-        private readonly IMapper _mapper;
         private readonly Mock<IBeerRepository> _beerRepositoryMock;
+        private readonly IMapper _mapper;
+
         private readonly BeersController _beersController;
 
         // Arrange
         public BeersControllerTests()
         {
             _beerRepositoryMock = new Mock<IBeerRepository>();
-            _beerRepositoryMock.Setup(repo => repo.GetAllAsync(null, true)).ReturnsAsync(GetAllBeersTestData());
+            _beerRepositoryMock.Setup(repo => repo.GetAllAsync(null, true)).ReturnsAsync(GetAllBeersRepositoryData());
 
             var mapper = new MapperConfiguration(cfg =>
             {
@@ -44,7 +45,7 @@ namespace WholesaleBeer.API.Tests
             Assert.Equivalent(expected, result);
         }
 
-        private List<Beer> GetAllBeersTestData()
+        private List<Beer> GetAllBeersRepositoryData()
         {
             var beers = new List<Beer>()
             {
